@@ -8,7 +8,7 @@ import { Card } from 'react-native-paper';
 const firebaseConfig = {
   apiKey: "AIzaSyCtMKAay4vecprbykKaGeO6oQDZpCyf9uI",
   authDomain: "vicarius-5dc40.firebaseapp.com",
-  databaseURL: "https://vicarius-5dc40-default-rtdb.europe-west1.firebasedatabase.app/",
+  databaseURL: "https://vicarius-5dc40-default-rtdb.europe-west1.firebasedatabase.app",
   projectId: "vicarius-5dc40",
   storageBucket: "vicarius-5dc40.appspot.com",
   messagingSenderId: "898186916297",

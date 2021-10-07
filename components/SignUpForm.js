@@ -34,26 +34,26 @@ function SignUpForm() {
    * setErrorMessage, angiver værdien for state-variablen, errormessage
    */
     const handleSubmit = async() => {
-        if (isSelected===true){
-            console.log("working")
+        if (isSelected){
+            try {
+                await firebase.auth().createUserWithEmailAndPassword(email, password).then((data) => {
+                });
+            } catch (error) {
+                setErrorMessage(error.message)
+            }
+        } else {
+            setErrorMessage('Handelsbetingelser ikke accepteret \n Acceptere venligst handelsbetingelserne for at tilmelde vikrsomheden til Vicarius')
 
-        }else {
-console.log("not working")
+            Alert.alert(
+                "Handelsbetingelser ikke accepteret",
+                "Acceptere venligst handelsbetingelserne for at tilmelde vikrsomheden til Vicarius",
+                [
+                    {text: "OK", onPress: () => console.log("OK Pressed")}
+                ],
+                {cancelable: false}
+            );
         }
-        Alert.alert(
-            "Alert Title",
-            "My Alert Msg",
-            [
-                { text: "OK", onPress: () => console.log("OK Pressed") }
-            ],
-            { cancelable: false }
-        );
-        try {
-            await firebase.auth().createUserWithEmailAndPassword(email, password).then((data)=>{
-            });
-        } catch (error){
-            setErrorMessage(error.message)
-        }
+
 
     }
 
@@ -96,12 +96,8 @@ console.log("not working")
                     onValueChange={setSelection}
                     color={isSelected ? '#4630EB' : undefined}
                 />
-                <Text style={styles.paragraph}>Custom colored checkbox</Text>
+                <Text style={styles.paragraph}>Accepterer virksomheden Handelsbetingelserne? {isSelected ? "👍" : "👎"}</Text>
             </View>
-
-            <Text style={styles.label}>
-                Accepterer virksomheden Handelsbetingelserne? {isSelected ? "👍" : "👎"}</Text>
-
 
             {errorMessage && (
                 <Text style={styles.error}>Error: {errorMessage}</Text>
@@ -138,30 +134,27 @@ const styles = StyleSheet.create({
         color: 'blue',
         justifyContent: 'center',
     },
-
-    label: {
-        margin: 5,
-        alignSelf: "center",
-        justifyContent: 'center',
-    },
     checkbox: {
         margin: 8,
+        justifyContent: 'center',
+        alignItems: 'center',
+        textAlign: 'center',
+
     },
     section: {
         flexDirection: 'row',
         alignItems: 'center',
+        justifyContent: 'center',
+        textAlign: 'center',
     },
     paragraph: {
         fontSize: 15,
+        justifyContent: 'center',
+        alignItems: 'center',
+        textAlign: 'center',
+
     },
 });
 
 //Eksport af Loginform, således denne kan importeres og benyttes i andre komponenter
 export default SignUpForm;
-
-/*
-            <CheckBox
-                value={isSelected}
-                onValueChange={() => setSelection(!isSelected)}
-                style={styles.checkbox}
-            />*/

@@ -10,7 +10,8 @@
   },
   "dependencies": {
     "@expo/ngrok": "^4.1.0",
-    "@react-native-community/masked-view": "0.1.10",
+    "@react-native-async-storage/async-storage": "^1.15.13",
+    "@react-native-community/masked-view": "^0.1.11",
     "@react-native-masked-view/masked-view": "^0.2.6",
     "@react-native-picker/picker": "^2.2.1",
     "@react-navigation/bottom-tabs": "^6.0.7",
@@ -19,18 +20,18 @@
     "@unimodules/core": "^7.1.2",
     "@unimodules/react-native-adapter": "^6.3.9",
     "expo": "^43.0.0",
-    "expo-checkbox": "~1.0.3",
-    "expo-constants": "~11.0.1",
-    "expo-status-bar": "~1.0.4",
-    "firebase": "8.2.3",
+    "expo-checkbox": "^1.0.3",
+    "expo-constants": "^11.1.0",
+    "expo-status-bar": "^1.1.0",
+    "firebase": "^8.10.0",
     "lodash": "^4.17.21",
     "lodash.xorby": "^4.7.0",
     "multiselect-react-dropdown": "^2.0.7",
-    "react": "^16.13.1",
+    "react": "17.0.2",
     "react-dom": "16.13.1",
-    "react-multi-search-select": "^1.2.2",
-    "react-native": "https://github.com/expo/react-native/archive/sdk-42.0.0.tar.gz",
-    "react-native-dropdown-picker": "^5.1.28",
+    "react-multi-search-select": "^1.3.0",
+    "react-native": "^0.64.3",
+    "react-native-dropdown-picker": "^5.2.3",
     "react-native-elements": "^3.4.2",
     "react-native-form-select-picker": "0.0.12",
     "react-native-gesture-handler": "~1.10.2",
@@ -40,9 +41,9 @@
     "react-native-multi-selectbox": "^1.5.0",
     "react-native-multiple-select": "^0.5.7",
     "react-native-multiple-select-list": "^1.0.4",
-    "react-native-paper": "^4.9.2",
+    "react-native-paper": "^4.10.1",
     "react-native-quick-select": "0.0.5",
-    "react-native-reanimated": "~2.2.0",
+    "react-native-reanimated": "^2.2.4",
     "react-native-safe-area-context": "3.2.0",
     "react-native-screens": "~3.4.0",
     "react-native-select-multiple": "^2.1.0",
@@ -56,7 +57,7 @@
     "uuid": "^8.3.2"
   },
   "devDependencies": {
-    "@babel/core": "~7.9.0"
+    "@babel/core": "^7.9.6"
   },
   "private": true
 }

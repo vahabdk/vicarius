@@ -101,10 +101,11 @@ export default function ClinicProfile({ navigation }) {
             try {
                 setErrorMessage("");
                 if (!isValidEmail(contactMail)) {
-                    setErrorMessage(contactMail + "is invalid ");
+                    setErrorMessage(contactMail + "ugyldig email ");
 
                     return;
                 }
+
                 var clinicRef = firebase.database().ref("clinics").push();
                 var key = clinicRef.key;
                 await firebase.database().ref("clinics").push({

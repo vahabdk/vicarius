@@ -16,7 +16,7 @@ export default function SignUpScreen({navigation}) {
     const [password, setPassword] = useState('111111')
     const [confirm_password, setConfirmPassword] = useState('111111')
     const [errorMessage, setErrorMessage] = useState(null)
-    const [isSelected, setSelection] = useState(true);
+    const [isSelected, setSelection] = useState(false);
 
     const renderButton = () => {
         return <TouchableHighlight onPress={() => handleSubmit()} style={styles.renderButton}>

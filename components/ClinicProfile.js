@@ -372,7 +372,7 @@ const styles = StyleSheet.create({
         backgroundColor: "green",
         alignItems: "center",
         borderWidth: 1,
-        width: 100,
+        width: 200,
         marginTop: 10,
     },
 });

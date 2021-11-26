@@ -1,96 +1,67 @@
-import React, {useEffect, useState} from 'react';
-import { Text, View, StyleSheet } from 'react-native';
-import SignUpForm from './components/SignUpForm';
-import ProfileScreen from './components/ProfileScreen';
+import React from 'react';
+import SignUpScreen from './components/SignUpScreen';
+import ClinicProfile from './components/ClinicProfile';
+import LoginScreen from './components/LoginScreen';
+import CandidateProfile from './components/CandidateProfile';
 import firebase from 'firebase';
-import { Card } from 'react-native-paper';
+import {NavigationContainer} from '@react-navigation/native';
+import 'react-native-gesture-handler';
+import {createBottomTabNavigator} from "@react-navigation/bottom-tabs";
+import {createStackNavigator} from '@react-navigation/stack';
+
+
+const Tab = createBottomTabNavigator();
+const Stack = createStackNavigator();
+
 
 const firebaseConfig = {
-  apiKey: "AIzaSyCtMKAay4vecprbykKaGeO6oQDZpCyf9uI",
-  authDomain: "vicarius-5dc40.firebaseapp.com",
-  databaseURL: "https://vicarius-5dc40-default-rtdb.europe-west1.firebasedatabase.app",
-  projectId: "vicarius-5dc40",
-  storageBucket: "vicarius-5dc40.appspot.com",
-  messagingSenderId: "898186916297",
-  appId: "1:898186916297:web:1b9803a081b6f687e03818"
+  apiKey: "AIzaSyCnvk99y9_kB84kIL_MXe5P6z_WedccxLI",
+  authDomain: "vicarius-ny.firebaseapp.com",
+  databaseURL: "https://vicarius-ny-default-rtdb.europe-west1.firebasedatabase.app",
+  projectId: "vicarius-ny",
+  storageBucket: "vicarius-ny.appspot.com",
+  messagingSenderId: "45927527723",
+  appId: "1:45927527723:web:d2a0afb42f1caa2ddcc16e"
 };
 
 export default function App() {
-
-//Her oprettes bruger state variblen
-  const [user, setUser] = useState({ loggedIn: false });
 
   //Koden sikrer at kun én Firebase initieres under brug af appen.
   if (!firebase.apps.length) {
     firebase.initializeApp(firebaseConfig);
   }
 
-//onAuthstatechanged er en prædefineret metode, forsynet af firebase, som konstant observerer brugerens status (logget ind vs logget ud)
-//Pba. brugerens status foretages et callback i form af setUSer metoden, som håndterer user-state variablens status.
-  function onAuthStateChange(callback) {
-    return firebase.auth().onAuthStateChanged(user => {
-      if (user) {
-        callback({loggedIn: true, user: user});
-      } else {
-        callback({loggedIn: false});
-      }
-    });
+  function StackNavi({route}) {
+    const param = () => {
+      return route.params;
+    }
+    console.log(param());
+    return (
+        <Stack.Navigator
+            screenOptions={{headerShown: false}}
+            initialRouteName={ param()}
+        >
+          <Stack.Screen name='candidate' component={CandidateProfile}/>
+          <Stack.Screen name='company' component={ClinicProfile}/>
+        </Stack.Navigator>
+    );
   }
 
-  //Heri aktiverer vi vores listener i form af onAuthStateChanged, så vi dynamisk observerer om brugeren er aktiv eller ej.
-  useEffect(() => {
-    const unsubscribe = onAuthStateChange(setUser);
-    return () => {
-      unsubscribe();
-    };
-  }, []);
 
-//Her oprettes gæstekomponentsindhold, der udgøres af sign-up
-  const GuestPage = () => {
-    return(
-        <View style={styles.container}>
-          <Text style={styles.header}>
-            Vicarius
-          </Text>
-          <Text style={styles.paragraph}>
-            Genvej til din næste vikar
-          </Text>
+  function TabNavi() {
+    return (
+        <NavigationContainer>
+        <Tab.Navigator>
+          <Tab.Screen name="Tilmelding" component={SignUpScreen} />
+          <Tab.Screen name="Login" component={LoginScreen} />
+          <Tab.Screen name="Profil" component={StackNavi} />
+        </Tab.Navigator>
+        </NavigationContainer>
 
-          <Card style={{padding:20}}>
-
-            <SignUpForm/>
-          </Card>
-
-        </View>
-    )
+    );
   }
 
-  return user.loggedIn ? <ProfileScreen /> : <GuestPage/> ;
+
+return <TabNavi/>
 
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    backgroundColor: 'transparent',
-  },
-
-  header: {
-    margin: 10,
-    fontSize: 60,
-    fontWeight: 'bold',
-    textAlign: 'center',
-    justifyContent: 'center',
-    color: 'blue',
-  },
-
-  paragraph: {
-    margin: 10,
-    fontSize: 40,
-    fontWeight: 'bold',
-    textAlign: 'center',
-    justifyContent: 'center',
-  },
-
-});

@@ -161,7 +161,7 @@ export default function ApplicationDetails({ navigation }) {
         <ScrollView>
             <View style={styles.container}>
                 <Text style={styles.header}>Vicarius</Text>
-                <Text style={styles.paragraph}>Genvej til din næste vikar</Text>
+                <Text style={styles.paragraph}>Genvej til dit næste vikariat</Text>
                 <TextInput
                     placeholder="Dit navn"
                     value={candidateName}

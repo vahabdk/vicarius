@@ -340,7 +340,7 @@ const styles = StyleSheet.create({
         backgroundColor: "green",
         alignItems: "center",
         borderWidth: 1,
-        width: 200,
+        width: 150,
         marginTop: 10,
     },
 

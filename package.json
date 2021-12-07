@@ -54,7 +54,8 @@
     "react-native-web": "^0.17.5",
     "react-navigation-stack": "^2.10.4",
     "react-simple-multi-select": "^1.1.0",
-    "uuid": "^8.3.2"
+    "uuid": "^8.3.2",
+    "expo-secure-store": "~11.0.3"
   },
   "devDependencies": {
     "@babel/core": "^7.9.6"

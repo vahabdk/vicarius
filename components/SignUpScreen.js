@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 import firebase from 'firebase';
 import { CheckBox } from 'react-native-elements';
-
+import asyncStorage from "../utilities/asyncStorage";
 
 export default function SignUpScreen({navigation}) {
     const [email, setEmail] = useState('test@test.com')
@@ -35,19 +35,20 @@ export default function SignUpScreen({navigation}) {
         } else {
             if (isSelected)
                 try {
-                    await firebase.auth().createUserWithEmailAndPassword(email, password).then((data) => {
+                    await firebase.auth().createUserWithEmailAndPassword(email, password).then (async (data) => {
                         console.log("User info", data.user);
                         const user = data.user;
                         const userId = user.uid;
                         const email = user.email;
 
-                        firebase
+                        await firebase
                             .database()
                             .ref("clinics/" + userId)
                             .set({
                                 email: email,
                                 userId,
                             });
+                        await asyncStorage.save("clinicId", userId)
                     });
                     navigation.navigate('Profil', 'company');
                 } catch (error) {
@@ -74,18 +75,19 @@ export default function SignUpScreen({navigation}) {
         } else {
             if (isSelected)
                 try {
-                    await firebase.auth().createUserWithEmailAndPassword(email, password).then((data) => {
+                    await firebase.auth().createUserWithEmailAndPassword(email, password).then(async(data) => {
                         const user = data.user;
                         const userId = user.uid;
                         const email = user.email;
 
-                        firebase
+                        await firebase
                             .database()
                             .ref("candidates/" + userId)
                             .set({
                                 email: email,
                                 userId,
                             });
+                        await asyncStorage.save("candidateId", userId)
                     });
                     navigation.navigate('Profil', 'candidate');
                 } catch (error) {

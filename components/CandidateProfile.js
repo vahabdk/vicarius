@@ -17,6 +17,8 @@ import Button from "react-native-select-two/lib/Button";
 import { xorBy } from "lodash";
 import onlyDigits from "../utilities/onlyDigits";
 import isValidEmail from "../utilities/isValidEmail";
+import asyncStorage from "../utilities/asyncStorage";
+import deleteAccount from "../services/deleteAccount";
 
 export default function ApplicationDetails({ navigation }) {
     const [candidateName, setCandidateName] = useState("");
@@ -102,24 +104,20 @@ export default function ApplicationDetails({ navigation }) {
         if (selectedItemsC.length) {
             try {
                 setErrorMessage("");
-                if (contactMailC.length > 5 && !isValidEmail(contactMailC)) {
+                if (!isValidEmail(contactMailC)) {
                     setErrorMessage(contactMailC + " er ugyldig ");
 
                     return;
                 }
-                const currentUser = firebase.auth().currentUser;
-                const userId = currentUser.uid;
+                const candidateId = await asyncStorage.getValueFor("candidateId")
 
-                console.log({ userId, currentUser });
-                await firebase
-                    .database()
-                    .ref("candidates/" + userId)
-                    .set({
-                        selectedItemsC,
-                        cTlf,
-                        candidateName,
-                        contactMailC,
-                    });
+                var candidateRef = firebase.database().ref(`/candidates/${candidateId}`)
+                await candidateRef.update({
+                    selectedItemsC,
+                    cTlf,
+                    candidateName,
+                    contactMailC,
+                });
                 setSelectedItemsC([]);
 
                 Alert.alert(
@@ -156,6 +154,37 @@ export default function ApplicationDetails({ navigation }) {
             ? clinicData
             : filterByCriteria(combinedCriterias);
     console.log(combinedCriterias);
+
+    const confirmDelete = () => {
+        Alert.alert('Er du sikker?', 'Ønsker du at slette din bruger?', [
+            {text: 'Annuller', style: 'cancel'},
+            {text: 'Slet', style: 'destructive', onPress: () => handleDelete()},
+        ])
+    };
+
+    const deleteUserInfo = async () => {
+        const candidateId = await asyncStorage.getValueFor("candidateId");
+        try {
+            await firebase.database().ref(`/candidates/${candidateId}`).remove();
+            navigation.navigate("Tilmelding");
+        } catch (error) {
+            Alert.alert(error.message);
+        }
+    };
+
+    const handleDelete = () => {
+        const onAccountDeleteSuccess = async () => {
+            await deleteUserInfo();
+        };
+
+        const onAccountDeleteFail = (error) => {
+            Alert.alert(
+                " Something went wrong, We can not delete account :" + error.message
+            );
+        };
+
+        deleteAccount(onAccountDeleteSuccess, onAccountDeleteFail);
+    };
 
     return (
         <ScrollView>
@@ -258,6 +287,12 @@ export default function ApplicationDetails({ navigation }) {
                 >
                     <Text style={{ color: "white", fontWeight: "bold" }}>Log ud</Text>
                 </TouchableHighlight>
+                <TouchableHighlight
+                    onPress={() => confirmDelete()}
+                    style={styles.deleteButton}
+                >
+                    <Text style={{ color: "white", fontWeight: "bold" }}>Slet profil</Text>
+                </TouchableHighlight>
             </View>
         </ScrollView>
     );
@@ -349,5 +384,14 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         width: "100%",
         color: "blue",
+    },
+
+    deleteButton: {
+        justifyContent: "space-around",
+        backgroundColor: "green",
+        alignItems: "center",
+        borderWidth: 1,
+        width: 150,
+        marginTop: 10,
     },
 });

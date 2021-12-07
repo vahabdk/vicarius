@@ -15,10 +15,11 @@ import { xorBy } from "lodash";
 import Button from "react-native-select-two/lib/Button";
 import onlyDigits from "../utilities/onlyDigits";
 import isValidEmail from "../utilities/isValidEmail";
+import asyncStorage from "../utilities/asyncStorage";
+import deleteAccount from "../services/deleteAccount";
 
 
-
-export default function ClinicProfile({ navigation }) {
+export default function ClinicProfile({ route, navigation }) {
     const [contactName, setContactName] = useState("");
     const [tlf, setTlf] = useState("");
     const [workPlace, setWorkPlace] = useState("");
@@ -101,15 +102,15 @@ export default function ClinicProfile({ navigation }) {
             try {
                 setErrorMessage("");
                 if (!isValidEmail(contactMail)) {
-                    setErrorMessage(contactMail + "ugyldig email ");
+                    setErrorMessage(contactMail + "er ugyldig ");
 
                     return;
                 }
 
-                var clinicRef = firebase.database().ref("clinics").push();
-                var key = clinicRef.key;
-                await firebase.database().ref("clinics").push({
-                    id: key,
+                const clinicId = await asyncStorage.getValueFor("clinicId")
+
+                var clinicRef = firebase.database().ref(`/clinics/${clinicId}`)
+                await clinicRef.update({
                     selectedItems,
                     workPlace,
                     workTime,
@@ -141,8 +142,6 @@ export default function ClinicProfile({ navigation }) {
             );
         }
     };
-
-
     const handleLogOut = async () => {
         await firebase.auth().signOut();
         navigation.navigate("Login");
@@ -159,6 +158,39 @@ export default function ClinicProfile({ navigation }) {
             ? candidateData
             : filterByCriteria(combinedCriterias);
     console.log(combinedCriterias);
+
+    const confirmDelete = () => {
+            Alert.alert('Er du sikker?', 'Ønsker du at slette din bruger?', [
+                {text: 'Annuller', style: 'cancel'},
+                {text: 'Slet', style: 'destructive', onPress: () => handleDelete()},
+            ])
+    };
+
+    const deleteUserInfo = async () => {
+        const clinicId = await asyncStorage.getValueFor("clinicId");
+        console.log({ clinicId });
+        try {
+            await firebase.database().ref(`/clinics/${clinicId}`).remove();
+            navigation.navigate("Tilmelding");
+        } catch (error) {
+            Alert.alert(error.message);
+        }
+    };
+
+    const handleDelete = () => {
+        const onAccountDeleteSuccess = async () => {
+            await deleteUserInfo();
+        };
+
+        const onAccountDeleteFail = (error) => {
+            Alert.alert(
+                " Something went wrong, We can not delete account :" + error.message
+            );
+        };
+
+        deleteAccount(onAccountDeleteSuccess, onAccountDeleteFail);
+    };
+
 
     return (
         <ScrollView>
@@ -281,6 +313,13 @@ export default function ClinicProfile({ navigation }) {
                 >
                     <Text style={{ color: "white", fontWeight: "bold" }}>Log ud</Text>
                 </TouchableHighlight>
+
+                <TouchableHighlight
+                    onPress={() => confirmDelete()}
+                    style={styles.deleteButton}
+                >
+                    <Text style={{ color: "white", fontWeight: "bold" }}>Slet profil</Text>
+                </TouchableHighlight>
             </View>
         </ScrollView>
     );
@@ -367,7 +406,7 @@ const styles = StyleSheet.create({
         width: "60%",
     },
 
-    button: {
+    deleteButton: {
         justifyContent: "space-around",
         backgroundColor: "green",
         alignItems: "center",

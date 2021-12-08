@@ -51,10 +51,8 @@ export default function ClinicProfile({ route, navigation }) {
                 .get()
                 .then((snapshot) => {
                     if (snapshot.exists()) {
-                        console.log(snapshot.val());
                         const response = snapshot.val();
                         const candidates = Object.values(response);
-                        console.log(candidates);
                         setCandidateData(candidates);
                     } else {
                         console.log("No data available");
@@ -157,7 +155,6 @@ export default function ClinicProfile({ route, navigation }) {
         combinedCriterias.length === 0
             ? candidateData
             : filterByCriteria(combinedCriterias);
-    console.log(combinedCriterias);
 
     const confirmDelete = () => {
             Alert.alert('Er du sikker?', 'Ønsker du at slette din bruger?', [
@@ -168,7 +165,6 @@ export default function ClinicProfile({ route, navigation }) {
 
     const deleteUserInfo = async () => {
         const clinicId = await asyncStorage.getValueFor("clinicId");
-        console.log({ clinicId });
         try {
             await firebase.database().ref(`/clinics/${clinicId}`).remove();
             navigation.navigate("Tilmelding");
@@ -408,7 +404,7 @@ const styles = StyleSheet.create({
 
     deleteButton: {
         justifyContent: "space-around",
-        backgroundColor: "green",
+        backgroundColor: "pink",
         alignItems: "center",
         borderWidth: 1,
         width: 150,

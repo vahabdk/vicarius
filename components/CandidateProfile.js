@@ -50,10 +50,8 @@ export default function ApplicationDetails({ navigation }) {
                 .get()
                 .then((snapshot) => {
                     if (snapshot.exists()) {
-                        console.log(snapshot.val());
                         const response = snapshot.val();
                         const clinics = Object.values(response);
-                        console.log(clinics);
                         setClinicData(clinics);
                     } else {
                         console.log("No data available");
@@ -153,7 +151,6 @@ export default function ApplicationDetails({ navigation }) {
         combinedCriterias.length === 0
             ? clinicData
             : filterByCriteria(combinedCriterias);
-    console.log(combinedCriterias);
 
     const confirmDelete = () => {
         Alert.alert('Er du sikker?', 'Ønsker du at slette din bruger?', [
@@ -388,7 +385,7 @@ const styles = StyleSheet.create({
 
     deleteButton: {
         justifyContent: "space-around",
-        backgroundColor: "green",
+        backgroundColor: "pink",
         alignItems: "center",
         borderWidth: 1,
         width: 150,

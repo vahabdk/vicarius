@@ -1,6 +1,6 @@
 import firebase from "firebase";
 
-export default function deleteAccount ( onSuccess,onFailure){
+export default function deleteAccount ( onSuccess,onFailure ){
 
     const user = firebase.auth().currentUser;
     user.delete().then(() => {

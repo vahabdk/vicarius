@@ -9,11 +9,11 @@ import 'react-native-gesture-handler';
 import {createBottomTabNavigator} from "@react-navigation/bottom-tabs";
 import {createStackNavigator} from '@react-navigation/stack';
 
-
+//Navigation bliver defineret
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 
-
+// Firebase konfiguration
 const firebaseConfig = {
   apiKey: "AIzaSyCnvk99y9_kB84kIL_MXe5P6z_WedccxLI",
   authDomain: "vicarius-ny.firebaseapp.com",
@@ -23,19 +23,18 @@ const firebaseConfig = {
   messagingSenderId: "45927527723",
   appId: "1:45927527723:web:d2a0afb42f1caa2ddcc16e"
 };
-
+//eksporterer funktionen som indeholder alle importeret komponenter, som skal anvendes i programmet.
 export default function App() {
 
   //Koden sikrer at kun én Firebase initieres under brug af appen.
   if (!firebase.apps.length) {
     firebase.initializeApp(firebaseConfig);
   }
-
+  //Funktion som adskiller views baseret på brugerparamtere således, at man kommer ind på den rigtige brugerprofil.
   function StackNavi({route}) {
     const param = () => {
       return route.params;
     }
-    console.log(param());
     return (
         <Stack.Navigator
             screenOptions={{headerShown: false}}
@@ -47,7 +46,7 @@ export default function App() {
     );
   }
 
-
+  // Laver tabnavigator i bunden
   function TabNavi() {
     return (
         <NavigationContainer>

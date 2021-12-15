@@ -8,9 +8,9 @@ import {
     Alert, ScrollView,
 } from 'react-native';
 import firebase from 'firebase';
-import { CheckBox } from 'react-native-elements';
+import { CheckBox } from 'react-native-elements'; //https://reactnativeelements.com/docs/checkbox/
 import asyncStorage from "../utilities/asyncStorage";
-
+//Startværdien bliver defineret og useState definerer hvilket format de indtastede værdier skal gemmes som.
 export default function SignUpScreen({navigation}) {
     const [email, setEmail] = useState('test@test.com')
     const [password, setPassword] = useState('111111')
@@ -28,7 +28,7 @@ export default function SignUpScreen({navigation}) {
             <Text style={{color: "white", fontWeight: "bold"}}>Tilmed som vikar til Vicarius App!</Text>
         </TouchableHighlight>;
     };
-
+    //Asynkron funktion. Tjekker først om kodeord er ens. Dernæst tjekkes om checkboksen er krydset af. Hvis begge kriterier er opfyldt, benyttes en  prædefineret metode som tager mail og password som argumenter og opretter en bruger.
     const handleSubmit = async () => {
         if (password !== confirm_password) {
             setErrorMessage("Kodeord er ikke ens");
@@ -68,7 +68,7 @@ export default function SignUpScreen({navigation}) {
             }
         }
     }
-
+    //Asynkron funktion. Tjekker først om kodeord er ens. Dernæst tjekkes om checkboksen er krydset af. Hvis begge kriterier er opfyldt, benyttes en  prædefineret metode som tager mail og password som argumenter og opretter en bruger.
     const handleSubmit2 = async () => {
         if (password !== confirm_password) {
             setErrorMessage("Kodeord er ikke ens");

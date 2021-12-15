@@ -1,3 +1,4 @@
+// funktion som tjekker om email er gyldig
 export default function isValidEmail(email)
 {
 

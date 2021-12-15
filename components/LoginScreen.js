@@ -9,11 +9,11 @@ import {
 import firebase from 'firebase';
 
 export default function LoginForm({navigation}) {
-
+    //Startværdien bliver defineret og useState definerer hvilket format de indtastede værdier skal gemmes som.
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [errorMessage, setErrorMessage] = useState(null)
-
+    //Virksomhedslogin til en eksisterende bruger. Asynkron funktion som benytter en prædefineret metode som tager mail og password som argumenter.
     const handleLogin = async () => {
         try {
             await firebase.auth().signInWithEmailAndPassword(email, password).then((data)=>{
@@ -24,6 +24,7 @@ export default function LoginForm({navigation}) {
             setErrorMessage(error.message)
         }
     }
+    ////Kandidatlogin til en eksisterende bruger. Asynkron funktion som benytter en prædefineret metode som tager mail og password som argumenter.
     const handleLogin2 = async () => {
         try {
             await firebase.auth().signInWithEmailAndPassword(email, password).then((data)=>{
@@ -42,7 +43,7 @@ export default function LoginForm({navigation}) {
     };
     const loginButton2 = () => {
         return <TouchableHighlight onPress={() => handleLogin2()} style={styles.loginButton2}>
-            <Text style={{color:"white", fontWeight: "bold"}}>Vikar login</Text>
+            <Text style={{color:"white", fontWeight: "bold"}}>Klinikassistent login</Text>
         </TouchableHighlight>;
     };
 

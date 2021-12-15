@@ -10,16 +10,17 @@ import {
 } from "react-native";
 import firebase from "firebase";
 import { useEffect, useState } from "react";
-import Constants from "expo-constants";
-import { ScrollView } from "react-native-gesture-handler";
-import SelectBox from "react-native-multi-selectbox";
+import Constants from "expo-constants"; //https://docs.expo.dev/versions/latest/sdk/constants/
+import { ScrollView } from "react-native-gesture-handler"; //Giver mulighed for at scrolle i view
+import SelectBox from "react-native-multi-selectbox"; //Mulighed for at vælge flere valg i qualifications
 import Button from "react-native-select-two/lib/Button";
-import { xorBy } from "lodash";
+import { xorBy } from "lodash"; //https://lodash.com/docs/#xorBy
 import onlyDigits from "../utilities/onlyDigits";
 import isValidEmail from "../utilities/isValidEmail";
 import asyncStorage from "../utilities/asyncStorage";
 import deleteAccount from "../services/deleteAccount";
 
+//Startværdien bliver defineret og useState definerer hvilket format de indtastede værdier skal gemmes som.
 export default function ApplicationDetails({ navigation }) {
     const [candidateName, setCandidateName] = useState("");
     const [cTlf, setCTlf] = useState("");
@@ -27,7 +28,7 @@ export default function ApplicationDetails({ navigation }) {
     const [clinicData, setClinicData] = useState([]);
     const [errorMessage, setErrorMessage] = useState(null);
     const [contactMailC, setContactMailC] = useState("");
-
+    //Definerer de forskellige qualifications en kandidat kan vælge.
     const qualifications = [
         { item: "Dental Suite", id: "DS" },
         { item: "Al Dente", id: "AD" },
@@ -41,7 +42,7 @@ export default function ApplicationDetails({ navigation }) {
         { item: "Assistere kirurgi", id: "AK" },
         { item: "Tage aftryk/scanne", id: "TA" },
     ];
-
+    //Tjekker databasen efter klinikdata og fremviser disse, hvis de findes.
     useEffect(() => {
         if (!clinicData.length) {
             const dbRef = firebase.database().ref();
@@ -62,7 +63,7 @@ export default function ApplicationDetails({ navigation }) {
                 });
         }
     }, []);
-
+    //Matchfunktion, som tjekker efter match mellem candidateCriteria og selectedExp.
     const hasMatch = (candidateCriterias, selectedExp) => {
         if (!selectedExp?.length) {
             return false;
@@ -79,7 +80,7 @@ export default function ApplicationDetails({ navigation }) {
             return false;
         }
     };
-
+    //Filtreringsfunktion som viser det filtreret data på baggrund af om der er match mellem candidateCriteria og selectedExp.
     function filterByCriteria(candidateCriteria) {
         const allCompany = clinicData;
 
@@ -93,11 +94,15 @@ export default function ApplicationDetails({ navigation }) {
 
         return filteredData;
     }
-
+    //Logger ud fra Firebase og navigerer til loginsiden
     const handleLogOut = async () => {
         await firebase.auth().signOut();
         navigation.navigate("Login");
     };
+    /*Gem knappen. Asynkron funktion som først tjekker om der er valgt items fra selectbox.
+    Samtidigt tjekker funktionen om kontaktmailen er gyldig.
+    Hvis begge kriterier ikke er opfyldt bliver kandidatens værdier ikke opdateret.
+    Hvis begge kriterier derimod er opfyld, bliver de indskrevne værdier opdateret*/
     const handleApply = async () => {
         if (selectedItemsC.length) {
             try {
@@ -140,7 +145,7 @@ export default function ApplicationDetails({ navigation }) {
             );
         }
     };
-
+    //Når der er selectedItems, bliver de returneret samt at filtreringsfunktionen bliver kaldt.
     function onMultiChangeC() {
         if (selectedItemsC)
             return (item) => setSelectedItemsC(xorBy(selectedItemsC, [item], "id"));
@@ -151,14 +156,14 @@ export default function ApplicationDetails({ navigation }) {
         combinedCriterias.length === 0
             ? clinicData
             : filterByCriteria(combinedCriterias);
-
+    //Bekræftelse på slet brugerprofil
     const confirmDelete = () => {
         Alert.alert('Er du sikker?', 'Ønsker du at slette din bruger?', [
             {text: 'Annuller', style: 'cancel'},
             {text: 'Slet', style: 'destructive', onPress: () => handleDelete()},
         ])
     };
-
+    //Profilen bliver slettet under /candidates i Firebase og brugeren bliver navigeret tilbage til tilmeldingssiden
     const deleteUserInfo = async () => {
         const candidateId = await asyncStorage.getValueFor("candidateId");
         try {
@@ -168,12 +173,12 @@ export default function ApplicationDetails({ navigation }) {
             Alert.alert(error.message);
         }
     };
-
+    //Kandidatinfo bliver slettet under Authentication i Firebase
     const handleDelete = () => {
         const onAccountDeleteSuccess = async () => {
             await deleteUserInfo();
         };
-
+        //Skulle slet funktionen slå fejl, bliver en alert vist med error.message.
         const onAccountDeleteFail = (error) => {
             Alert.alert(
                 " Something went wrong, We can not delete account :" + error.message

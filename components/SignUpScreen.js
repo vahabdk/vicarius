@@ -25,7 +25,7 @@ export default function SignUpScreen({navigation}) {
     };
     const renderButton2 = () => {
         return <TouchableHighlight onPress={() => handleSubmit2()} style={styles.renderButton}>
-            <Text style={{color: "white", fontWeight: "bold"}}>Tilmed som vikar til Vicarius App!</Text>
+            <Text style={{color: "white", fontWeight: "bold"}}>Tilmed som klinikassistent til Vicarius App!</Text>
         </TouchableHighlight>;
     };
     //Asynkron funktion. Tjekker først om kodeord er ens. Dernæst tjekkes om checkboksen er krydset af. Hvis begge kriterier er opfyldt, benyttes en  prædefineret metode som tager mail og password som argumenter og opretter en bruger.
@@ -113,12 +113,8 @@ export default function SignUpScreen({navigation}) {
             <ScrollView>
             <View style={styles.container}>
                 <Text style={styles.header}>
-                    Vicarius
+                    VICARIUS
                 </Text>
-                <Text style={styles.paragraph}>
-                    Genvej til din næste vikar
-                </Text>
-                <Text style={styles.header2}></Text>
                 <View style={styles.inputContainer}>
                     <TextInput
                         placeholder="Email"
@@ -153,7 +149,10 @@ export default function SignUpScreen({navigation}) {
                         <Text style={styles.error}>Error: {errorMessage}</Text>
                     )}
                     <View style={{flexDirection: "row"}}>
-                        {renderButton()}{renderButton2()}
+                        {renderButton()}
+                    </View>
+                    <View style={{flexDirection: "row"}}>
+                        {renderButton2()}
                     </View>
                 </View>
             </View>
@@ -170,6 +169,7 @@ const styles = StyleSheet.create({
 
     },
     inputContainer: {
+        marginTop: 50,
         width: '60%',
         justifyContent: 'center',
         alignItems: 'center',
@@ -181,14 +181,15 @@ const styles = StyleSheet.create({
 
     inputField: {
         width: '100%',
-        borderWidth: 1,
+        borderBottomWidth: 0.5,
+        borderColor: '#aaaaaa',
         padding: 10,
         margin: 10,
         borderRadius: 5,
     },
 
     header: {
-        fontSize: 80,
+        fontSize: 60,
         justifyContent: 'center',
         alignItems: 'center',
         color: 'blue',
@@ -197,44 +198,32 @@ const styles = StyleSheet.create({
 
     renderButton: {
         backgroundColor: 'blue',
-        borderWidth: 1,
         padding: 10,
         alignItems: 'center',
         justifyContent: 'center',
         borderRadius: 10,
         marginLeft: 30,
         marginRight: 30,
-        width: '50%',
+        width: '100%',
+        marginTop: 10,
     },
+
     renderButton2: {
         backgroundColor: 'blue',
-        borderWidth: 1,
         padding: 10,
         alignItems: 'center',
         justifyContent: 'center',
         borderRadius: 10,
         marginLeft: 30,
         marginRight: 30,
-        width: '50%',
-    },
-
-    header2: {
-        fontSize: 30,
-        textAlign: 'center',
-        color: 'blue',
-        justifyContent: 'center',
-        fontWeight: 'bold',
-    },
-
-    paragraph: {
-        margin: 10,
-        fontSize: 20,
-        fontWeight: 'bold',
+        width: '100%',
+        marginTop: 10,
     },
 
     section: {
         justifyContent: 'center',
         alignItems: 'center',
         backgroundColor: 'transparent',
+
         },
 });

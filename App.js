@@ -8,6 +8,7 @@ import {NavigationContainer} from '@react-navigation/native';
 import 'react-native-gesture-handler';
 import {createBottomTabNavigator} from "@react-navigation/bottom-tabs";
 import {createStackNavigator} from '@react-navigation/stack';
+import { AntDesign } from '@expo/vector-icons';
 
 //Navigation bliver defineret
 const Tab = createBottomTabNavigator();
@@ -51,9 +52,27 @@ export default function App() {
     return (
         <NavigationContainer>
         <Tab.Navigator>
-          <Tab.Screen name="Tilmelding" component={SignUpScreen} />
-          <Tab.Screen name="Login" component={LoginScreen} />
-          <Tab.Screen name="Profil" component={StackNavi} />
+          <Tab.Screen name="Tilmelding" component={SignUpScreen}
+                      options={{
+                        tabBarLabel: 'Tilmelding',
+                        tabBarColor: '#0094DE',
+                        tabBarIcon: ({ color }) => (
+                            <AntDesign name="addusergroup" size={24} color="black" />                        ),
+                      }}/>
+          <Tab.Screen name="Login" component={LoginScreen}
+                      options={{
+                        tabBarLabel: 'Login',
+                        tabBarColor: '#0094DE',
+                        tabBarIcon: ({ color }) => (
+                            <AntDesign name="login" size={24} color="black" />                        ),
+                      }}/>
+          <Tab.Screen name="Profil" component={StackNavi}
+                      options={{
+                        tabBarLabel: 'Profil',
+                        tabBarColor: '#0094DE',
+                        tabBarIcon: ({ color }) => (
+                            <AntDesign name="user" size={24} color="black" />                        ),
+                      }}/>
         </Tab.Navigator>
         </NavigationContainer>
 

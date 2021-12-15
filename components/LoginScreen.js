@@ -51,10 +51,7 @@ export default function LoginForm({navigation}) {
 
         <View style={styles.container}>
             <Text style={styles.header}>
-                Vicarius
-            </Text>
-            <Text style={styles.paragraph}>
-                Genvej til din næste vikar
+                VICARIUS
             </Text>
             <View style={styles.inputContainer}>
                 <TextInput
@@ -74,9 +71,11 @@ export default function LoginForm({navigation}) {
                     <Text style={styles.error}>Error: {errorMessage}</Text>
                 )}
                 <View style={{flexDirection: "row", alignItems: "center", justifyContent: "space-around"}}>
-                    {loginButton()}{loginButton2()}
+                    {loginButton()}
                 </View>
-
+                <View style={{flexDirection: "row", alignItems: "center", justifyContent: "space-around"}}>
+                    {loginButton2()}
+                </View>
             </View>
         </View>
 
@@ -94,25 +93,27 @@ const styles = StyleSheet.create({
 
     },
     inputContainer: {
+        marginTop: 100,
         width: '60%',
         justifyContent: 'center',
         alignItems: 'center',
 
     },
     inputField: {
-        width: '100%',
-        borderWidth: 1,
+        width: "100%",
+        borderBottomWidth: 0.5,
+        borderColor: '#aaaaaa',
         padding: 10,
         margin: 10,
         borderRadius: 5,
     },
 
     header: {
-        fontSize: 80,
-        justifyContent: 'center',
-        alignItems: 'center',
-        color: 'blue',
-        fontWeight: 'bold',
+        fontSize: 60,
+        alignItems: "center",
+        justifyContent: "center",
+        color: "blue",
+        fontWeight: "bold",
     },
 
     paragraph: {
@@ -124,27 +125,28 @@ const styles = StyleSheet.create({
     },
 
     loginButton: {
+        marginTop: 50,
         backgroundColor: 'blue',
         borderWidth: 1,
         padding: 10,
         alignItems: 'center',
         justifyContent: 'center',
         borderRadius: 10,
-        marginLeft: 30,
-        marginRight: 30,
-        width: '60%',
+        marginLeft: 10,
+        marginRight: 10,
+        width: '80%',
 
     },
     loginButton2: {
         backgroundColor: 'blue',
-        borderWidth: 1,
         padding: 10,
         alignItems: 'center',
         justifyContent: 'center',
         borderRadius: 10,
-        marginLeft: 30,
-        marginRight: 30,
-        width: '60%',
+        marginLeft: 10,
+        marginRight: 10,
+        marginTop: 10,
+        width: '80%',
 
     },
 });

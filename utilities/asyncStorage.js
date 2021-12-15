@@ -1,6 +1,6 @@
 import * as SecureStore from "expo-secure-store"; //https://docs.expo.dev/versions/latest/sdk/securestore/
 // denne funktion gemmer og kryptere key værdier lokalt på enheden
-class StoreManager {
+class AsyncStorage {
     static async save(key, value) {
         await SecureStore.setItemAsync(key, value);
     }
@@ -16,4 +16,4 @@ class StoreManager {
     }
 }
 
-export default StoreManager;
+export default AsyncStorage;

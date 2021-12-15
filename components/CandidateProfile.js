@@ -13,12 +13,12 @@ import { useEffect, useState } from "react";
 import Constants from "expo-constants"; //https://docs.expo.dev/versions/latest/sdk/constants/
 import { ScrollView } from "react-native-gesture-handler"; //Giver mulighed for at scrolle i view
 import SelectBox from "react-native-multi-selectbox"; //Mulighed for at vælge flere valg i qualifications
-import Button from "react-native-select-two/lib/Button";
 import { xorBy } from "lodash"; //https://lodash.com/docs/#xorBy
 import onlyDigits from "../utilities/onlyDigits";
 import isValidEmail from "../utilities/isValidEmail";
 import asyncStorage from "../utilities/asyncStorage";
 import deleteAccount from "../services/deleteAccount";
+import {AntDesign} from "@expo/vector-icons";
 
 //Startværdien bliver defineret og useState definerer hvilket format de indtastede værdier skal gemmes som.
 export default function ApplicationDetails({ navigation }) {
@@ -191,8 +191,8 @@ export default function ApplicationDetails({ navigation }) {
     return (
         <ScrollView>
             <View style={styles.container}>
-                <Text style={styles.header}>Vicarius</Text>
-                <Text style={styles.paragraph}>Genvej til dit næste vikariat</Text>
+                <Text style={styles.header}>VICARIUS</Text>
+                <View style={styles.inputContainer}>
                 <TextInput
                     placeholder="Dit navn"
                     value={candidateName}
@@ -217,6 +217,10 @@ export default function ApplicationDetails({ navigation }) {
                     onChangeText={(contactMailC) => setContactMailC(contactMailC)}
                     style={styles.inputField}
                 />
+                </View>
+                <View style={{ paddingVertical: 10 }}>
+                    <Text style={{ color: "red" }}> {errorMessage} </Text>
+                </View>
 
                 <View style={styles.multiselect}>
                     <SelectBox
@@ -235,8 +239,7 @@ export default function ApplicationDetails({ navigation }) {
             </View>
             <View style={{ alignItems: "center", justifyContent: "space-around" }}>
                 {Boolean(filteredData.length) &&
-                filteredData.map((clinic, index) => {
-                    return (
+                filteredData.map((clinic, index) => (
                         <View key={index} style={styles.infoContainer}>
                             <ScrollView>
                                 <Text> Kontaktperson: {clinic?.contactName} </Text>
@@ -252,48 +255,78 @@ export default function ApplicationDetails({ navigation }) {
                                         <Text key={item.id}> - {item.item}</Text>
                                     ))}
                                 </View>
-                                <Button
-                                    style={styles.button}
-                                    title="Send email"
-                                    onPress={() =>
-                                        Linking.openURL("mailto:" + clinic.contactMail)
-                                    }
-                                />
-                                <Button
-                                    style={styles.button}
-                                    title="Ring til"
-                                    onPress={() => Linking.openURL("tel:" + clinic.tlf)}
-                                />
+                                <View style={{ alignItems: "center", justifyContent: "space-around" }}>
+                                    <TouchableHighlight onPress={() => Linking.openURL("mailto:" + clinic.contactMail)} style={styles.listButton}>
+                                        <View style={{flexDirection: "row", justifyContent: "center"}}>
+                                            <View style={{padding: 5}}>
+                                                <AntDesign name="mail" size={20} color="white" />
+                                            </View>
+                                            <View style={{padding: 5, justifyContent: "center"}}>
+                                                <Text style={styles.buttonText}> Send mail</Text>
+                                            </View>
+                                        </View>
+
+                                    </TouchableHighlight>
+                                </View>
+
+                                <View style={{ alignItems: "center", justifyContent: "space-around" }}>
+                                <TouchableHighlight onPress={() => Linking.openURL("tel:" + clinic.tlf)} style={styles.listButton}>
+                                        <View style={{flexDirection: "row", justifyContent: "center"}}>
+                                            <View style={{padding: 5}}>
+                                                <AntDesign name="phone" size={20} color="white" />
+                                            </View>
+                                            <View style={{padding: 5, justifyContent: "center"}}>
+                                                <Text style={styles.buttonText}> Ring til</Text>
+                                            </View>
+                                        </View>
+                                    </TouchableHighlight>
+                                </View>
                             </ScrollView>
                         </View>
-                    );
-                })}
+                ))}
             </View>
 
             <View style={{ paddingVertical: 10, alignItems: "center"}}>
                 <Text style={{ color: "red" }}> {errorMessage} </Text>
             </View>
-
             <View style={{ alignItems: "center", justifyContent: "space-around" }}>
-                <TouchableHighlight
-                    onPress={() => handleApply()}
-                    style={styles.applyButton}
-                >
-                    <Text style={{ color: "white", fontWeight: "bold" }}>Gem</Text>
+                <TouchableHighlight onPress={() => handleApply()} style={styles.applyButton}>
+                    <View style={{flexDirection: "row", justifyContent: "center"}}>
+                        <View style={{padding: 5}}>
+                            <AntDesign name="upload" size={24} color="white" />
+                        </View>
+                        <View style={{padding: 5, justifyContent: "center"}}>
+                            <Text style={styles.buttonText}> Send ansøgning</Text>
+                        </View>
+                    </View>
                 </TouchableHighlight>
             </View>
-            <View style={{ alignItems: "center", justifyContent: "space-around" }}>
+            <View style={{ alignItems: "center" }}>
                 <TouchableHighlight
                     onPress={() => handleLogOut()}
-                    style={styles.loginButton}
+                    style={styles.logOutButton}
                 >
-                    <Text style={{ color: "white", fontWeight: "bold" }}>Log ud</Text>
+                    <View style={{flexDirection: "row", justifyContent: "center"}}>
+                        <View style={{padding: 5}}>
+                            <AntDesign name="logout" size={24} color="white" />
+                        </View>
+                        <View style={{padding: 5, justifyContent: "center"}}>
+                            <Text style={styles.buttonText}>Log ud</Text>
+                        </View>
+                    </View>
                 </TouchableHighlight>
                 <TouchableHighlight
                     onPress={() => confirmDelete()}
                     style={styles.deleteButton}
                 >
-                    <Text style={{ color: "white", fontWeight: "bold" }}>Slet profil</Text>
+                    <View style={{flexDirection: "row", justifyContent: "center"}}>
+                        <View style={{padding: 5}}>
+                            <AntDesign name="delete" size={24} color="white" />
+                        </View>
+                        <View style={{padding: 5, justifyContent: "center"}}>
+                            <Text style={styles.buttonText}>Slet profil</Text>
+                        </View>
+                    </View>
                 </TouchableHighlight>
             </View>
         </ScrollView>
@@ -312,47 +345,42 @@ const styles = StyleSheet.create({
     },
 
     header: {
-        margin: 10,
         fontSize: 60,
-        fontWeight: "bold",
-        textAlign: "center",
+        alignItems: "center",
         justifyContent: "center",
         color: "blue",
+        fontWeight: "bold",
     },
 
-    paragraph: {
-        margin: 10,
-        fontSize: 40,
-        fontWeight: "bold",
-        textAlign: "center",
+    inputContainer: {
+        width: "60%",
         justifyContent: "center",
-    },
+        alignItems: "center",
+        },
 
     inputField: {
-        borderWidth: 1,
+        width: "100%",
+        borderBottomWidth: 0.5,
+        borderColor: '#aaaaaa',
         padding: 10,
         margin: 10,
         borderRadius: 5,
-        justifyContent: "center",
-        alignItems: "center",
-        width: "60%",
     },
 
-    loginButton: {
-        backgroundColor: "red",
-        borderWidth: 1,
+    logOutButton: {
+        backgroundColor: "pink",
         padding: 10,
         alignItems: "center",
-        justifyContent: "space-around",
+        justifyContent: "center",
         borderRadius: 10,
         marginLeft: 30,
         marginRight: 30,
         width: "60%",
         marginTop: 10,
     },
+
     applyButton: {
-        backgroundColor: "blue",
-        borderWidth: 1,
+        backgroundColor: "lightblue",
         padding: 10,
         alignItems: "center",
         justifyContent: "space-around",
@@ -363,37 +391,53 @@ const styles = StyleSheet.create({
     },
 
     infoContainer: {
-        borderWidth: 1,
         padding: 10,
         margin: 10,
         borderRadius: 5,
+        elevation: 10,
+        borderWidth: 0.5,
+        borderColor: "#aaaaaa",
         alignItems: "center",
         width: "60%",
         marginVertical: 10,
     },
 
-    button: {
-        justifyContent: "space-around",
-        backgroundColor: "green",
-        alignItems: "center",
-        borderWidth: 1,
-        width: 150,
-        marginTop: 10,
-    },
 
     multiselect: {
         alignItems: "center",
         justifyContent: "center",
         width: "100%",
         color: "blue",
+        marginTop: 10,
     },
 
     deleteButton: {
-        justifyContent: "space-around",
-        backgroundColor: "pink",
+        backgroundColor: "red",
+        padding: 10,
         alignItems: "center",
-        borderWidth: 1,
-        width: 150,
+        justifyContent: "center",
+        borderRadius: 10,
+        marginLeft: 30,
+        marginRight: 30,
+        width: "60%",
         marginTop: 10,
     },
+
+    buttonText: {
+        color: "white",
+        fontWeight: "bold",
+        fontSize: 16,
+    },
+
+    listButton: {
+        backgroundColor: "lightgreen",
+        padding: 5,
+        alignItems: "center",
+        justifyContent: "center",
+        borderRadius: 10,
+        marginLeft: 10,
+        marginRight: 10,
+        width: "80%",
+        marginTop: 5,
+    }
 });

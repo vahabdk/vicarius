@@ -12,11 +12,13 @@ import {
 import firebase from "firebase";
 import SelectBox from "react-native-multi-selectbox";
 import { xorBy } from "lodash"; //https://lodash.com/docs/#xorBy
-import Button from "react-native-select-two/lib/Button";
 import onlyDigits from "../utilities/onlyDigits";
 import isValidEmail from "../utilities/isValidEmail";
 import asyncStorage from "../utilities/asyncStorage";
 import deleteAccount from "../services/deleteAccount";
+import { AntDesign } from '@expo/vector-icons';
+import Constants from "expo-constants";
+
 
 //Startværdien bliver defineret og useState definerer hvilket format de indtastede værdier skal gemmes som.
 export default function ClinicProfile({ navigation }) {
@@ -28,7 +30,7 @@ export default function ClinicProfile({ navigation }) {
     const [selectedItems, setSelectedItems] = useState([]);
     const [errorMessage, setErrorMessage] = useState(null);
     const [contactMail, setContactMail] = useState("");
-//Definerer de forskellige demands en kandidat kan vælge.
+    //Definerer de forskellige demands en kandidat kan vælge.
     const demands = [
         { item: "Dental Suite", id: "DS" },
         { item: "Al Dente", id: "AD" },
@@ -42,7 +44,7 @@ export default function ClinicProfile({ navigation }) {
         { item: "Assistere kirurgi", id: "AK" },
         { item: "Tage aftryk/scanne", id: "TA" },
     ];
-//Tjekker databasen efter kandidatdata og fremviser disse, hvis de findes.
+    //Tjekker databasen efter kandidatdata og fremviser disse, hvis de findes.
     useEffect(() => {
         if (!candidateData.length) {
             const dbRef = firebase.database().ref();
@@ -63,7 +65,7 @@ export default function ClinicProfile({ navigation }) {
                 });
         }
     }, []);
-//Matchfunktion, som tjekker efter match mellem companyCriteria og selectedJobs.
+    //Matchfunktion, som tjekker efter match mellem companyCriteria og selectedJobs.
     const hasMatch = (companyCriterias, selectedJobs) => {
         if (!companyCriterias?.length || !selectedJobs?.length) {
             return false;
@@ -80,7 +82,7 @@ export default function ClinicProfile({ navigation }) {
         }
         return false;
     };
-//Filtreringsfunktion som viser det filtreret data på baggrund af om der er match mellem companyCriteria og selectedJobs.
+    //Filtreringsfunktion som viser det filtreret data på baggrund af om der er match mellem companyCriteria og selectedJobs.
     function filterByCriteria(companyCriterias) {
         const allCandidates = candidateData;
 
@@ -148,7 +150,7 @@ export default function ClinicProfile({ navigation }) {
         await firebase.auth().signOut();
         navigation.navigate("Login");
     };
-//Når der er selectedItems, bliver de returneret samt at filtreringsfunktionen bliver kaldt.
+    //Når der er selectedItems, bliver de returneret samt at filtreringsfunktionen bliver kaldt.
     function onMultiChange() {
         if (selectedItems)
             return (item) => setSelectedItems(xorBy(selectedItems, [item], "id"));
@@ -177,12 +179,12 @@ export default function ClinicProfile({ navigation }) {
             Alert.alert(error.message);
         }
     };
-//Clinicinfo bliver slettet under Authentication i Firebase
+    //Clinicinfo bliver slettet under Authentication i Firebase
     const handleDelete = () => {
         const onAccountDeleteSuccess = async () => {
             await deleteUserInfo();
         };
-//Skulle slet funktionen slå fejl, bliver en alert vist med error.message.
+        //Skulle slet funktionen slå fejl, bliver en alert vist med error.message.
         const onAccountDeleteFail = (error) => {
             Alert.alert(
                 " Something went wrong, We can not delete account :" + error.message
@@ -196,8 +198,7 @@ export default function ClinicProfile({ navigation }) {
     return (
         <ScrollView>
             <View style={styles.container}>
-                <Text style={styles.header}>Vicarius</Text>
-                <Text style={styles.paragraph}>Genvej til din næste vikar</Text>
+                <Text style={styles.header}>VICARIUS</Text>
                 <View style={styles.inputContainer}>
                     <TextInput
                         placeholder="Kontaktpersonens navn"
@@ -273,37 +274,48 @@ export default function ClinicProfile({ navigation }) {
                                     <Text key={item.id}> - {item.item}</Text>
                                 ))}
                             </View>
-                            <Button
-                                style={styles.button}
-                                title="Send email"
-                                onPress={() =>
-                                    Linking.openURL("mailto:" + candidate.contactMailC)
-                                }
-                            />
-                            <Button
-                                style={styles.button}
-                                title="Ring til"
-                                onPress={() => Linking.openURL("tel:" + candidate.cTlf)}
-                            />
+
+                            <View style={{ alignItems: "center", justifyContent: "space-around" }}>
+                            <TouchableHighlight onPress={() => Linking.openURL("mailto:" + candidate.contactMailC)} style={styles.listButton}>
+                                <View style={{flexDirection: "row", justifyContent: "center"}}>
+                                    <View style={{padding: 5}}>
+                                        <AntDesign name="mail" size={20} color="white" />
+                                    </View>
+                                        <View style={{padding: 5, justifyContent: "center"}}>
+                                            <Text style={styles.buttonText}> Send mail</Text>
+                                        </View>
+                                </View>
+
+                            </TouchableHighlight>
+                            </View>
+
+                            <View style={{ alignItems: "center", justifyContent: "space-around" }}>
+                            <TouchableHighlight onPress={() => Linking.openURL("tel:" + candidate.cTlf)} style={styles.listButton}>
+                                <View style={{flexDirection: "row", justifyContent: "center"}}>
+                                    <View style={{padding: 5}}>
+                                        <AntDesign name="phone" size={20} color="white" />
+                                </View>
+                                <View style={{padding: 5, justifyContent: "center"}}>
+                                    <Text style={styles.buttonText}> Ring til</Text>
+                                </View>
+                                </View>
+                            </TouchableHighlight>
+                            </View>
                         </ScrollView>
                     </View>
                 ))}
             </View>
 
             <View style={{ alignItems: "center", justifyContent: "space-around" }}>
-                <TouchableHighlight
-                    onPress={() => handleSubmit()}
-                    style={styles.submitButton}
-                >
-                    <Text
-                        style={{
-                            color: "white",
-                            fontWeight: "bold",
-                            justifyContent: "space-around",
-                        }}
-                    >
-                        Send ansøgning
-                    </Text>
+                <TouchableHighlight onPress={() => handleSubmit()} style={styles.submitButton}>
+                    <View style={{flexDirection: "row", justifyContent: "center"}}>
+                        <View style={{padding: 5}}>
+                        <AntDesign name="upload" size={24} color="white" />
+                        </View>
+                    <View style={{padding: 5, justifyContent: "center"}}>
+                    <Text style={styles.buttonText}> Send ansøgning</Text>
+                        </View>
+                    </View>
                 </TouchableHighlight>
             </View>
 
@@ -312,14 +324,28 @@ export default function ClinicProfile({ navigation }) {
                     onPress={() => handleLogOut()}
                     style={styles.logOutButton}
                 >
-                    <Text style={{ color: "white", fontWeight: "bold" }}>Log ud</Text>
+                    <View style={{flexDirection: "row", justifyContent: "center"}}>
+                        <View style={{padding: 5}}>
+                            <AntDesign name="logout" size={24} color="white" />
+                        </View>
+                        <View style={{padding: 5, justifyContent: "center"}}>
+                        <Text style={styles.buttonText}>Log ud</Text>
+                        </View>
+                    </View>
                 </TouchableHighlight>
 
                 <TouchableHighlight
                     onPress={() => confirmDelete()}
                     style={styles.deleteButton}
                 >
-                    <Text style={{ color: "white", fontWeight: "bold" }}>Slet profil</Text>
+                    <View style={{flexDirection: "row", justifyContent: "center"}}>
+                        <View style={{padding: 5}}>
+                            <AntDesign name="delete" size={24} color="white" />
+                        </View>
+                        <View style={{padding: 5, justifyContent: "center"}}>
+                    <Text style={styles.buttonText}>Slet profil</Text>
+                        </View>
+                    </View>
                 </TouchableHighlight>
             </View>
         </ScrollView>
@@ -329,9 +355,12 @@ export default function ClinicProfile({ navigation }) {
 const styles = StyleSheet.create({
 
     container: {
+        paddingTop: Constants.statusBarHeight,
+        flex: 1,
+        width: "100%",
         justifyContent: "center",
         alignItems: "center",
-        padding: 10,
+        backgroundColor: "transparent",
     },
 
     inputContainer: {
@@ -342,36 +371,31 @@ const styles = StyleSheet.create({
 
     inputField: {
         width: "100%",
-        borderWidth: 1,
+        borderBottomWidth: 0.5,
+        borderColor: '#aaaaaa',
         padding: 10,
         margin: 10,
         borderRadius: 5,
     },
 
     infoContainer: {
-        borderWidth: 1,
         padding: 10,
         margin: 10,
         borderRadius: 5,
+        elevation: 10,
+        borderWidth: 0.5,
+        borderColor: "#aaaaaa",
         alignItems: "center",
         width: "60%",
         marginVertical: 10,
     },
 
     header: {
-        fontSize: 80,
+        fontSize: 60,
         alignItems: "center",
         justifyContent: "center",
         color: "blue",
         fontWeight: "bold",
-    },
-
-    paragraph: {
-        margin: 10,
-        fontSize: 20,
-        fontWeight: "bold",
-        textAlign: "center",
-        justifyContent: "center",
     },
 
     multiselect: {
@@ -383,8 +407,7 @@ const styles = StyleSheet.create({
     },
 
     logOutButton: {
-        backgroundColor: "red",
-        borderWidth: 1,
+        backgroundColor: "pink",
         padding: 10,
         alignItems: "center",
         justifyContent: "center",
@@ -396,8 +419,7 @@ const styles = StyleSheet.create({
     },
 
     submitButton: {
-        backgroundColor: "blue",
-        borderWidth: 1,
+        backgroundColor: "lightblue",
         padding: 10,
         alignItems: "center",
         justifyContent: "space-around",
@@ -408,11 +430,32 @@ const styles = StyleSheet.create({
     },
 
     deleteButton: {
-        justifyContent: "space-around",
-        backgroundColor: "pink",
+        backgroundColor: "red",
+        padding: 10,
         alignItems: "center",
-        borderWidth: 1,
-        width: 150,
+        justifyContent: "center",
+        borderRadius: 10,
+        marginLeft: 30,
+        marginRight: 30,
+        width: "60%",
         marginTop: 10,
     },
+
+    buttonText: {
+        color: "white",
+        fontWeight: "bold",
+        fontSize: 16,
+    },
+
+    listButton: {
+        backgroundColor: "lightgreen",
+        padding: 5,
+        alignItems: "center",
+        justifyContent: "center",
+        borderRadius: 10,
+        marginLeft: 10,
+        marginRight: 10,
+        width: "65%",
+        marginTop: 5,
+    }
 });

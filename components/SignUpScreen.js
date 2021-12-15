@@ -118,7 +118,7 @@ export default function SignUpScreen({navigation}) {
                 <Text style={styles.paragraph}>
                     Genvej til din næste vikar
                 </Text>
-                <Text style={styles.header2}>Første måned gratis, herefter kr. 59,-/måned</Text>
+                <Text style={styles.header2}></Text>
                 <View style={styles.inputContainer}>
                     <TextInput
                         placeholder="Email"

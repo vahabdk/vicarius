@@ -348,7 +348,7 @@ const styles = StyleSheet.create({
         fontSize: 60,
         alignItems: "center",
         justifyContent: "center",
-        color: "#ff9566",
+        color: "#81d4fa",
         fontWeight: "bold",
     },
 
@@ -380,7 +380,7 @@ const styles = StyleSheet.create({
     },
 
     applyButton: {
-        backgroundColor: "lightblue",
+        backgroundColor: "#81d4fa",
         padding: 10,
         alignItems: "center",
         justifyContent: "space-around",

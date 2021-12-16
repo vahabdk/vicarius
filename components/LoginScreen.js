@@ -112,7 +112,7 @@ const styles = StyleSheet.create({
         fontSize: 60,
         alignItems: "center",
         justifyContent: "center",
-        color: "blue",
+        color: "#ff9566",
         fontWeight: "bold",
     },
 
@@ -126,8 +126,7 @@ const styles = StyleSheet.create({
 
     loginButton: {
         marginTop: 50,
-        backgroundColor: 'blue',
-        borderWidth: 1,
+        backgroundColor: '#ff9566',
         padding: 10,
         alignItems: 'center',
         justifyContent: 'center',
@@ -138,7 +137,7 @@ const styles = StyleSheet.create({
 
     },
     loginButton2: {
-        backgroundColor: 'blue',
+        backgroundColor: '#ff9566',
         padding: 10,
         alignItems: 'center',
         justifyContent: 'center',

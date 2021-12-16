@@ -192,12 +192,12 @@ const styles = StyleSheet.create({
         fontSize: 60,
         justifyContent: 'center',
         alignItems: 'center',
-        color: 'blue',
+        color: '#ff9566',
         fontWeight: 'bold',
     },
 
     renderButton: {
-        backgroundColor: 'blue',
+        backgroundColor: '#ff9566',
         padding: 10,
         alignItems: 'center',
         justifyContent: 'center',
@@ -209,7 +209,7 @@ const styles = StyleSheet.create({
     },
 
     renderButton2: {
-        backgroundColor: 'blue',
+        backgroundColor: '#ff9566',
         padding: 10,
         alignItems: 'center',
         justifyContent: 'center',

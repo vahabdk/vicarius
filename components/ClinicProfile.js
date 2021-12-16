@@ -394,7 +394,7 @@ const styles = StyleSheet.create({
         fontSize: 60,
         alignItems: "center",
         justifyContent: "center",
-        color: "blue",
+        color: "#ff9566",
         fontWeight: "bold",
     },
 
@@ -402,7 +402,6 @@ const styles = StyleSheet.create({
         alignItems: "center",
         justifyContent: "center",
         width: "100%",
-        color: "blue",
         marginTop: 10,
     },
 

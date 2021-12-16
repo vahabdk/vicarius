@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 import firebase from 'firebase';
 import { CheckBox } from 'react-native-elements'; //https://reactnativeelements.com/docs/checkbox/
-import asyncStorage from "../utilities/asyncStorage";
+import asyncStorage from "../utilities/asyncstorage";
 //Startværdien bliver defineret og useState definerer hvilket format de indtastede værdier skal gemmes som.
 export default function SignUpScreen({navigation}) {
     const [email, setEmail] = useState('test@test.com')

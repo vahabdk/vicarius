@@ -55,23 +55,20 @@ export default function App() {
           <Tab.Screen name="Tilmelding" component={SignUpScreen}
                       options={{
                         tabBarLabel: 'Tilmelding',
-                        tabBarColor: '#0094DE',
                         tabBarIcon: ({ color }) => (
-                            <AntDesign name="addusergroup" size={24} color="black" />                        ),
+                            <AntDesign name="addusergroup" size={32} color="#81d4fa" />                        ),
                       }}/>
           <Tab.Screen name="Login" component={LoginScreen}
                       options={{
                         tabBarLabel: 'Login',
-                        tabBarColor: '#0094DE',
                         tabBarIcon: ({ color }) => (
-                            <AntDesign name="login" size={24} color="black" />                        ),
+                            <AntDesign name="login" size={32} color="#81d4fa" />                        ),
                       }}/>
           <Tab.Screen name="Profil" component={StackNavi}
                       options={{
                         tabBarLabel: 'Profil',
-                        tabBarColor: '#0094DE',
                         tabBarIcon: ({ color }) => (
-                            <AntDesign name="user" size={24} color="black" />                        ),
+                            <AntDesign name="user" size={32} color="#81d4fa" />                        ),
                       }}/>
         </Tab.Navigator>
         </NavigationContainer>

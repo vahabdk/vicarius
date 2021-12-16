@@ -16,9 +16,10 @@ import SelectBox from "react-native-multi-selectbox"; //Mulighed for at vælge f
 import { xorBy } from "lodash"; //https://lodash.com/docs/#xorBy
 import onlyDigits from "../utilities/onlyDigits";
 import isValidEmail from "../utilities/isValidEmail";
-import asyncStorage from "../utilities/asyncStorage";
+import asyncstorage from "../utilities/asyncstorage";
 import deleteAccount from "../services/deleteAccount";
 import {AntDesign} from "@expo/vector-icons";
+import asyncStorage from "@react-native-async-storage/async-storage"
 
 //Startværdien bliver defineret og useState definerer hvilket format de indtastede værdier skal gemmes som.
 export default function ApplicationDetails({ navigation }) {
@@ -108,11 +109,11 @@ export default function ApplicationDetails({ navigation }) {
             try {
                 setErrorMessage("");
                 if (!isValidEmail(contactMailC)) {
-                    setErrorMessage(contactMailC + " er ugyldig ");
+                    setErrorMessage("Ugyldig kontaktmail ");
 
                     return;
                 }
-                const candidateId = await asyncStorage.getValueFor("candidateId")
+                const candidateId = await asyncstorage.getValueFor("candidateId")
 
                 var candidateRef = firebase.database().ref(`/candidates/${candidateId}`)
                 await candidateRef.update({
@@ -165,7 +166,7 @@ export default function ApplicationDetails({ navigation }) {
     };
     //Profilen bliver slettet under /candidates i Firebase og brugeren bliver navigeret tilbage til tilmeldingssiden
     const deleteUserInfo = async () => {
-        const candidateId = await asyncStorage.getValueFor("candidateId");
+        const candidateId = await asyncstorage.getValueFor("candidateId");
         try {
             await firebase.database().ref(`/candidates/${candidateId}`).remove();
             navigation.navigate("Tilmelding");
@@ -286,9 +287,6 @@ export default function ApplicationDetails({ navigation }) {
                 ))}
             </View>
 
-            <View style={{ paddingVertical: 10, alignItems: "center"}}>
-                <Text style={{ color: "red" }}> {errorMessage} </Text>
-            </View>
             <View style={{ alignItems: "center", justifyContent: "space-around" }}>
                 <TouchableHighlight onPress={() => handleApply()} style={styles.applyButton}>
                     <View style={{flexDirection: "row", justifyContent: "center"}}>

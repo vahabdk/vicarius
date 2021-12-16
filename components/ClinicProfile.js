@@ -14,7 +14,7 @@ import SelectBox from "react-native-multi-selectbox";
 import { xorBy } from "lodash"; //https://lodash.com/docs/#xorBy
 import onlyDigits from "../utilities/onlyDigits";
 import isValidEmail from "../utilities/isValidEmail";
-import asyncStorage from "../utilities/asyncStorage";
+import asyncStorage from "../utilities/asyncstorage";
 import deleteAccount from "../services/deleteAccount";
 import { AntDesign } from '@expo/vector-icons';
 import Constants from "expo-constants";
@@ -105,7 +105,7 @@ export default function ClinicProfile({ navigation }) {
             try {
                 setErrorMessage("");
                 if (!isValidEmail(contactMail)) {
-                    setErrorMessage(contactMail + "er ugyldig ");
+                    setErrorMessage(contactMail + "Ugyldig kontaktmail ");
 
                     return;
                 }
